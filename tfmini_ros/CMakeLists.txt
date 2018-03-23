@@ -112,7 +112,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
- include_directories(include)
+ include_directories(${catkin_INCLUDE_DIRS} include)
 
 ## Declare a C++ library
 # add_library(TFmini_ros
@@ -170,7 +170,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -std=gnu++11")
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
  install(FILES
-  launch
+  tfmini.launch
 #   # myfile1
 #   # myfile2
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
