@@ -9,6 +9,8 @@ int main(int argc, char **argv)
   int baud_rate;
   benewake::TFmini *tfmini_obj;
 
+  ros::Rate r(60);
+
   nh.param("serial_port", portName, std::string("/dev/ttyUSB0"));
   nh.param("baud_rate", baud_rate, 115200);
 
@@ -23,9 +25,9 @@ int main(int argc, char **argv)
   float dist = 0;
   ROS_INFO_STREAM("Start processing ...");
 
-  while(ros::master::check() && ros::ok())
+  while( ros::ok())
   {
-    ros::spinOnce();
+    // ros::spinOnce();
     dist = tfmini_obj->getDist();
     if(dist > 0 && dist < TFmini_range.max_range)
     {
@@ -42,6 +44,7 @@ int main(int argc, char **argv)
     {
       ROS_ERROR_STREAM("Data validation error!");
     }
+    // r.sleep();
   }
 
   tfmini_obj->closePort();
