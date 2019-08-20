@@ -1,6 +1,6 @@
 #include <TFmini.h>
 #include <ros/ros.h>
-
+#include <sys/ioctl.h>
 //#define DEBUG
 
 namespace benewake
@@ -85,7 +85,9 @@ namespace benewake
     bool TFmini::readData(unsigned char* _buf, int _nRead)
     {
       int total = 0, ret = 0;
-
+      while (available_bytes() < _nRead) {
+        usleep(100);
+      }
       while(total != _nRead)
       {
         ret = read(serial_, _buf + total, (_nRead - total));
@@ -104,6 +106,12 @@ namespace benewake
 #endif // DEBUG
 
       return true;
+    }
+
+    int TFmini::available_bytes() {
+      int ret = 0;
+      ioctl(serial_, FIONREAD, &ret);
+      return ret;
     }
 
     float TFmini::getDist()
