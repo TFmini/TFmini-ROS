@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
   nh.param("serial_port", portName, std::string("/dev/ttyUSB0"));
   nh.param("baud_rate", baud_rate, 115200);
   nh.param<std::string>("frame_id", frame_id, "TFmini");
-  nh.param("loop_rate", loop_rate, 50.);
+  nh.param("loop_rate", loop_rate, 100.);
 
   tfmini_obj = new benewake::TFmini(portName, baud_rate);
   ros::Publisher pub_range = nh.advertise<sensor_msgs::Range>("range", 100, true);
