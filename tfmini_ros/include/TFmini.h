@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <string>
 #include <sensor_msgs/Range.h>
+#include <sys/ioctl.h>
 
 namespace benewake
 {
@@ -26,7 +27,7 @@ namespace benewake
       std::string portName_;
       int baudRate_;
       int serial_;
-
+      int available_bytes();
       bool readData(unsigned char *_buf, int _nRead);
   };
 }
