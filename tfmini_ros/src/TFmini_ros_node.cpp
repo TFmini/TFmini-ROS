@@ -29,16 +29,17 @@ int main(int argc, char **argv) {
   while (ros::master::check() && ros::ok()) {
     ros::spinOnce();
     dist = tfmini_obj->getDist();
+    TFmini_range.header.stamp = ros::Time::now();
     if (dist > 0 && dist < TFmini_range.max_range) {
       TFmini_range.range = dist;
-      TFmini_range.header.stamp = ros::Time::now();
-      pub_range.publish(TFmini_range);
     } else if (dist == -1.0) {
       ROS_ERROR_STREAM("Failed to read data. TFmini ros node stopped!");
       break;
     } else if (dist == 0.0) {
+      TFmini_range.range = std::numeric_limits<double>::infinity();;
       ROS_WARN_STREAM_THROTTLE(5., "Data validation error!");
     }
+    pub_range.publish(TFmini_range);
     r.sleep();
   }
 
