@@ -4,13 +4,19 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "tfmini_ros_node");
   ros::NodeHandle nh("~");
-  std::string id = "TFmini";
+  //std::string id = "TFmini";
+  std::string id;
   std::string portName;
   int baud_rate;
   benewake::TFmini *tfmini_obj;
 
   nh.param("serial_port", portName, std::string("/dev/ttyUSB0"));
   nh.param("baud_rate", baud_rate, 115200);
+  std::string frame_id = "TFmini";
+    if(!nh.getParam("frame_id", frame_id))
+    {
+        ROS_WARN_STREAM("No frame_id provided - default: " << frame_id);
+    }
 
   tfmini_obj = new benewake::TFmini(portName, baud_rate);
   ros::Publisher pub_range = nh.advertise<sensor_msgs::Range>(id, 1000, true);
@@ -19,7 +25,7 @@ int main(int argc, char **argv)
   TFmini_range.field_of_view = 0.04;
   TFmini_range.min_range = 0.3;
   TFmini_range.max_range = 12;
-  TFmini_range.header.frame_id = id;
+  TFmini_range.header.frame_id = frame_id;
   float dist = 0;
   ROS_INFO_STREAM("Start processing ...");
 
